@@ -1,4 +1,4 @@
 # fincrypto
-Pronounceable Finnish looking passwords
+Random Finnish looking text 
 
-Warning, these passwords lose some entropy. 
+Using these strings as passwords is not a good idea. 
