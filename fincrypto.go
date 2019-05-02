@@ -14,21 +14,24 @@ func main() {
 	syllabTable := cumMap(finSyllab)
 	sylmax:=uint64(18021)
 	firstMax := uint64(6164)
-
-	for loop:=0;loop<6;loop++ {
+	entropy_counter := uint64(1);
+	added_entropy := uint64(1)
+ // We pass 64 bits of entropy and are finished
+	for loop:=0;entropy_counter<=entropy_counter*added_entropy;loop++ {
+		entropy_counter *=added_entropy;
 		randInt := uint64(65535)
 		UintByte:=make([]byte,8)
 		for randInt > 3*sylmax && loop>0 || randInt>10*firstMax {
 			rByte:=make([]byte,2)
-        		_,err := rand.Read(rByte)
+      _,err := rand.Read(rByte)
 			UintByte[0] = rByte[0]
 			UintByte[1] = rByte[1]
-        		if err != nil { panic(err)}
+      if err != nil { panic(err)}
 			randInt = binary.LittleEndian.Uint64(UintByte)
 		}
 		if (loop>0) {
-		randInt = randInt%sylmax
-		keys := make([]int, len(syllabTable))
+			randInt = randInt%sylmax
+			keys := make([]int, len(syllabTable))
 		i := 0
 		for k,_ := range syllabTable {
     			keys[i] = k
@@ -37,6 +40,7 @@ func main() {
 		sort.Ints(keys)
 		for _,key := range keys {
 			if (randInt<uint64(key)) {
+				added_entropy = sylmax/uint64(finSyllab[syllabTable[key]])
 				fmt.Printf("%s",syllabTable[key])
 				break
 			}
@@ -52,6 +56,7 @@ func main() {
                 sort.Ints(keys)
                 for _,key := range keys {
                         if (randInt<uint64(key)) {
+																added_entropy = firstMax/uint64(finFirstSyllab[firstTable[key]])
                                 fmt.Printf("%s",firstTable[key])
                                 break
                         }
@@ -60,25 +65,25 @@ func main() {
 
 	}
 fmt.Printf("\n")
-		
+
 }
 
 func cumMap(mappi map[string]int) map[int]string {
 	palautus := make(map[int]string, len(mappi))
 	vali := make(map[int]string, len(mappi))
 	var keys []int
-	var summat []int 
+	var summat []int
 	summat = append(summat,0)
 	for key, value := range mappi {
 		vali[value]=key
 		summat = append(summat,value)
 		keys = append(keys, value)
 	}
-	
+
 	sort.Ints(keys)
 	for i, k := range keys {
 		summat[i+1] = summat[i]+summat[i+1]
 		palautus[summat[i+1]] = vali[k]
 	}
-	return palautus 
+	return palautus
 }
