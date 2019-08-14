@@ -1,4 +1,4 @@
 # fincrypto
 Random Finnish looking text 
 
-Using these strings as passwords is not a good idea. 
+This function generates combinations of the most common Finnish language syllables until 64 bits of entropy is reached. 
